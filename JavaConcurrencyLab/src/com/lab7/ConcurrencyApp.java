@@ -1,16 +1,25 @@
 package com.lab7;
 
 public class ConcurrencyApp {
+    public static void main(String[] args) throws InterruptedException {
 
-    // This is the main method where Java programs begin execution.
-    public static void main(String[] args) {
-        
-        // This line prints a simple message to the console.
-        System.out.println("Lab 7 Project Started.");
-        System.out.println("Ready for Initial Commit and Push.");
+        WorkerTask calcTask = new WorkerTask("Calculator-Thread");
+        WorkerTask logTask = new WorkerTask("Logger-Thread");
 
-        // We will add the multithreading code here later.
+        Thread t1 = new Thread(calcTask);
+        Thread t2 = new Thread(logTask);
+
+        t1.start();
+
+        System.out.println("\nMain: Waiting for Calculator-Thread to finish (using join())...");
+        t1.join();
+        System.out.println("Main: Calculator finished. Starting Logger-Thread.");
+
+        t2.start();
+
+        Thread.sleep(1000);
+
+        logTask.stopTask();
+        System.out.println("Main: Signaled Logger-Thread to stop gracefully.");
     }
 }
-
-
